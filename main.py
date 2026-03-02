@@ -12,29 +12,29 @@ def main() -> None:
     for player in data_json.keys():
 
         race, _ = Race.objects.get_or_create(
-            name=data_json[player]["race"]["name"],
-            description=data_json[player]["race"]["description"],
+            name=data_json[player].get("race").get("name"),
+            description=data_json[player].get("race").get("description"),
         )
 
         if data_json[player]["guild"]:
             guild, _ = Guild.objects.get_or_create(
-                name=data_json[player]["guild"]["name"],
-                description=data_json[player]["guild"]["description"],
+                name=data_json[player].get("guild").get("name"),
+                description=data_json[player].get("guild").get("description"),
             )
         else:
-            guild = data_json[player]["guild"]
+            guild = data_json[player].get("guild")
 
-        for skills in data_json[player]["race"]["skills"]:
+        for skills in data_json[player].get("race").get("skills"):
             Skill.objects.get_or_create(
-                name=skills["name"],
-                bonus=skills["bonus"],
+                name=skills.get("name"),
+                bonus=skills.get("bonus"),
                 race=race,
             )
 
         Player.objects.create(
             nickname=player,
-            email=data_json[player]["email"],
-            bio=data_json[player]["bio"],
+            email=data_json[player].get("email"),
+            bio=data_json[player].get("bio"),
             race=race,
             guild=guild,
         )
